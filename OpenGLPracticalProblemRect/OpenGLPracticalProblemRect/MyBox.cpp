@@ -9,6 +9,8 @@ void MyBox::SetPosition(float x, float y)
 {
 	m_x = x;
 	m_y = y;
+	m_midX = m_x + (static_cast<GLfloat>(m_width) / 2);
+	m_midY = m_y + (static_cast<GLfloat>(m_height) / 2);
 }
 
 bool MyBox::isCollide(MyBox * other) const
@@ -25,8 +27,7 @@ bool MyBox::isCollide(MyBox * other) const
 
 bool MyBox::isXcolided(MyBox * other) const
 {
-	if (m_x < other->m_x + other->m_width &&
-		m_x > other->m_x - m_width)
+	if ((Abs(m_midX,other->GetMidX()))<m_radX+other->GetRadX())
 	{
 		return true;
 	}
@@ -38,8 +39,7 @@ bool MyBox::isXcolided(MyBox * other) const
 
 bool MyBox::isYcolided(MyBox * other) const
 {
-	if (m_y < other->m_y + other->m_height &&
-		m_y > other->m_y - m_height)
+	if ((Abs(m_midY, other->GetMidY()))<m_radY + other->GetRadY())
 	{
 		return true;
 	}

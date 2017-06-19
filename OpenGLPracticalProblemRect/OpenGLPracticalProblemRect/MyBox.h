@@ -6,14 +6,17 @@ class MyBox
 {
 public:
 	MyBox(GLfloat x, GLfloat y, GLsizei width, GLsizei height, GLfloat xStep, GLfloat yStep)
-		:m_x(x), m_y(y), m_width(width), m_height(height), m_xStep(xStep), m_yStep(yStep)
+		:m_x(x),
+		m_y(y),
+		m_width(width),
+		m_height(height),
+		m_xStep(xStep),
+		m_yStep(yStep),
+		m_midX(x+(static_cast<GLfloat>(width)/2)),
+		m_midY(y+(static_cast<GLfloat>(height) /2)),
+		m_radX(static_cast<GLfloat>(width) / 2),
+		m_radY(static_cast<GLfloat>(height) / 2)
 	{
-		m_x = m_x;
-		m_y;
-		m_width;
-		m_height;
-		m_xStep;
-		m_yStep;
 	}
 	~MyBox() = default;
 
@@ -51,6 +54,22 @@ public:
 	{
 		return m_height;
 	}
+	GLfloat GetMidX()
+	{
+		return m_midX;
+	}
+	GLfloat GetMidY()
+	{
+		return m_midY;
+	}
+	GLfloat GetRadX()
+	{
+		return m_radX;
+	}
+	GLfloat GetRadY()
+	{
+		return m_radY;
+	}
 
 	void SetPosition(float x, float y);
 
@@ -61,11 +80,27 @@ private:
 	bool isXcolided(MyBox* other)const;
 	bool isYcolided(MyBox* other)const;
 
+	GLfloat Abs(GLfloat a, GLfloat b)const
+	{
+		if (a - b < 0)
+		{
+			return b - a;
+		}
+		else
+		{
+			return a - b;
+		}
+	}
+
 	GLfloat m_x;
 	GLfloat m_y;
 	GLsizei m_width;
 	GLsizei m_height;
 	GLfloat m_xStep;
 	GLfloat m_yStep;
+	GLfloat m_midX;
+	GLfloat m_midY;
+	GLfloat m_radX;
+	GLfloat m_radY;
 };
 

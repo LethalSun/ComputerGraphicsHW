@@ -77,36 +77,37 @@ void CheckBoxes(MyBox* box)
 		if (box->GetXStep() * otherBox->GetXStep() < 0)
 		{
 			auto xstep = box->GetXStep();
-			box->SetXStep(-xstep);
+			box->SetXStep(-xstep*0.9f);
 			xstep = otherBox->GetXStep();
-			otherBox->SetXStep(-xstep);
+			otherBox->SetXStep(-xstep*0.9f);
 		}
 
 		if (box->GetYStep() * otherBox->GetYStep() < 0)
 		{
 			auto ystep = box->GetYStep();
-			box->SetYStep(-ystep);
+			box->SetYStep(-ystep*0.9f);
 			ystep = otherBox->GetYStep();
-			otherBox->SetYStep(-ystep);
+			otherBox->SetYStep(-ystep*0.9f);
 		}
 
-		if (box->GetX()<otherBoxLeft&&box->GetX() > otherBoxLeft - box->GetWidth())
+		if (box->GetMidX() < otherBox->GetMidX())
 		{
-			box->SetPosition(otherBoxLeft - box->GetWidth(), box->GetY());
+			otherBox->SetPosition(box->GetX() + box->GetWidth(), otherBox->GetY());
 		}
-		else if (box->GetX() <otherBoxRight&&box->GetX() < otherBoxLeft)
+		else
 		{
-			box->SetPosition(otherBoxRight, box->GetY());
+			otherBox->SetPosition(box->GetX() - box->GetWidth(), otherBox->GetY());
 		}
 
-		if (box->GetY()<otherBoxBottom&&box->GetY() > otherBoxBottom - box->GetHeight())
+		if (box->GetMidY() < otherBox->GetMidY())
 		{
-			box->SetPosition(box->GetX(), box->GetY() - box->GetHeight());
+			otherBox->SetPosition(otherBox->GetX(),box->GetY() + box->GetHeight());
 		}
-		else if (box->GetY() < otherBoxTop&& box->GetY()<otherBoxBottom)
+		else
 		{
-			box->SetPosition(box->GetX(), otherBoxTop);
+			otherBox->SetPosition(otherBox->GetX(), box->GetY() - box->GetHeight());
 		}
+
 	}
 }
 
@@ -168,25 +169,18 @@ void ChangeSize(GLsizei w, GLsizei h)
 
 void main()
 {
-	std::random_device rng;
 
-	for (int i = 0; i < 4; ++i)
-	{
-		auto num =static_cast<float>(rng() % 20);
-
-		float x = -400 + i*200;
-		float y = -400 + i*200;
-		float xstep = num/10;
-
-		boxes.emplace_back(new MyBox(x, y, num+10, num+10, xstep, xstep));
-	}
+	boxes.emplace_back(new MyBox(-400.f, -100.f, 30.f, 30.f, 5.f, 5.f));
+	boxes.emplace_back(new MyBox(400.f, -100.f, 30.f, 30.f, 5.f, 5.f));
+	boxes.emplace_back(new MyBox(400.f, 100.f, 30.f, 30.f, 5.f, 5.f));
+	boxes.emplace_back(new MyBox(-400.f, 100.f, 30.f, 30.f, 5.f, 5.f));
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(1200, 900);
 	glutCreateWindow("OpenGLPracticalProblemRect");
 	glutDisplayFunc(Render);
 	glutReshapeFunc(ChangeSize);
-	glutTimerFunc(2000, TimerFunction, 1);
+	glutTimerFunc(1000, TimerFunction, 1);
 	SetupRC();
 
 	glutMainLoop();
